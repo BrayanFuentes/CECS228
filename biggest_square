@@ -1,0 +1,171 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Arrays;
+public class BiggestSquare
+{
+    public static void main(String[] args) throws FileNotFoundException
+    {
+        File inputFile = new File("input.txt");
+        Scanner scn = new Scanner(inputFile);
+        scn.useDelimiter("\n");
+        ArrayList<String> inputs = new ArrayList<String>();
+        //makes sure that there is a next line to read. Then it takes each line to put them into an arraylist
+        while(scn.hasNextLine())
+        {
+            String temp = scn.nextLine();
+            inputs.add(temp);
+        }
+        ArrayList<Character> grid = new ArrayList<Character>();
+        int value = inputs.size();
+        char[][]arr = new char[value][value];
+        //reads the each string in the arraylist and takes each character in all of the strings and puts them in another arraylist
+        for(int i = 0; i < value; i++)
+        {
+            String temp = inputs.get(i);
+            for (int r = 0; r < temp.length(); r++) 
+            {
+                grid.add(temp.charAt(r));
+            }
+                
+        }
+            
+        //the count makes sure that the for loop will read the whole arrayList and put it in the 2 dimsensional array
+        int count = 0;
+        for(int a = 0; a < value; a++ )
+        {
+            for(int b = 0 ; b < value;b++ )
+            {
+                arr[a][b] = grid.get(count);
+                count++;
+            }
+        }
+        // displays the 2 dimensional array
+        for(int c = 0; c < value; c++)
+        {
+            for(int d = 0; d < value; d++)
+            {
+                System.out.print(arr[c][d] + " ");
+                    
+            }
+            System.out.println();
+        }
+        int all = 0;
+        //make it into an array list
+        ArrayList<Integer> square = new ArrayList<Integer>(8);
+        int biggest_area = 0;    
+        int area = 0;
+        for(int x = 0; x < value; x++)
+        {
+            for(int y = 0; y < value; y++)
+            {
+                if(arr[x][y] == 'A')
+                {
+                    int row = x;
+                    int col = y;
+                    for(int z = row; z < value;z++)
+                    {
+                        for(int w = col+1; w < value; w++)
+                        {
+
+                            if(arr[z][w] == 'A' && row == z)
+                            {
+                                int row2 = z;
+                                int col2 = w;
+                                int dif = col2-col;
+                                if((row + dif) <= value || (row2-dif)>= 0)
+                                {
+                                   if(arr[row+dif][col] == 'A' || arr[row + dif][col2] == 'A' || arr[row2-dif][col] == 'A' || arr[row2-dif][col2] == 'A')
+                                   {
+                                       if(arr[row+dif][col] == 'A' )
+                                       {
+                                           int row3 = row + dif;
+                                           int col3 = col;
+                                           area = dif * dif;
+                                           if(biggest_area < area && arr[row3][col2] != 'B' )
+                                           {
+                                               biggest_area = area;
+                                               square.set(0,row);
+                                               square.set(1,col);
+                                               square.set(2,row2);
+                                               square.set(3,col2);
+                                               square.set(4,row3);
+                                               distances[5] = col3;
+                                               distances[6] = row3;
+                                               distances[7] = col2;                                              
+                                            }
+                                           
+                                       }  
+                                       else if(arr[row + dif][col2] == 'A')
+                                       {
+                                           int row3 = row + dif;
+                                           int col3 = col2;
+                                           area = dif * dif;
+                                           if(biggest_area < area  && arr[row3][col2] != 'B')
+                                           {
+                                               biggest_area = area;
+                                               distances[0] = row;
+                                               distances[1] = col;
+                                               distances[2] = row2;
+                                               distances[3] = col2;
+                                               distances[4] = row3;
+                                               distances[5] = col3;
+                                               distances[6] = row3;
+                                               distances[7] = col;                                              
+                                            }
+                                           
+                                        }
+                                        else if(arr[row2-dif][col] == 'A')
+                                       {
+                                           int row3 = row2 - dif;
+                                           int col3 = col;
+                                           area = dif * dif;
+                                           if(biggest_area < area && arr[row3][col2] != 'B')
+                                           {
+                                               
+                                               biggest_area = area;
+                                               distances[0] = row;
+                                               distances[1] = col;
+                                               distances[2] = row2;
+                                               distances[3] = col2;
+                                               distances[4] = row3;
+                                               distances[5] = col3;
+                                               distances[6] = row3;
+                                               distances[7] = col2;                                           
+                                            }
+                                           
+                                        }
+                                        else if(arr[row2-dif][col2] == 'A' )
+                                       {
+                                           int row3 = row2 - dif;
+                                           int col3 = col2;
+                                           area = dif * dif;
+                                           if(biggest_area < area  && arr[row3][col2] != 'B')
+                                           {
+                                               biggest_area = area;
+                                               distances[0] = row;
+                                               distances[1] = col;
+                                               distances[2] = row2;
+                                               distances[3] = col2;
+                                               distances[4] = row3;
+                                               distances[5] = col3;
+                                               distances[6] = row3;
+                                               distances[7] = col;                                           
+                                            }
+                                           
+                                        }
+                                    }
+                                }
+                            }        
+                        }
+                    }
+                }
+            }
+        }    
+        System.out.println(distances);
+
+        scn.close();
+    
+}
+}
