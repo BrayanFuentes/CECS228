@@ -1,0 +1,87 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import java.io.PrintWriter;
+import java.util.Arrays;
+public class PicFrogs {
+	
+	public static void main(String[] args) throws FileNotFoundException
+	{
+		File inputFile = new File("input.txt");
+		Scanner scn = new Scanner(inputFile);
+		PrintWriter out = new PrintWriter("output.txt");
+		int frogs = 0;
+		int nums = 0;
+		for(int o = 0; scn.hasNextInt() && o < 2; o++)
+		{
+			if(o == 0)
+			{
+				int temp = scn.nextInt();
+				frogs = temp;
+			}
+			else
+			{
+				int temp = scn.nextInt();
+				nums = temp;
+				
+			}
+		}
+		//System.out.println(frogs);	
+		char[] signs = new char[] {'+','-','+','+','-','+','+','+'};
+		/*while (scn.hasNext())
+        {
+           String str = scn.next(); 
+            signs = str.toCharArray();
+            
+            // do something
+        }
+		*/
+		int[] arr = new int[nums];		
+		for(int i = 1; i < nums +1; i++)
+		{
+			arr[i-1] = i;
+		}
+		int swaps = 0;
+		
+		//System.out.println(Arrays.toString(arr));
+		//counts how many swaps there are
+		for(int i = 0; i < signs.length;i++)
+		{
+			if(i == signs.length - 1)
+			{
+				continue;
+			}
+			else 
+			{
+				if(signs[i] != signs[i+1])
+				{
+					swaps++;
+				}
+			}
+		}
+		
+		int[] newarr = new int[nums]; 
+		int[] usednumbers = new int[nums];
+		
+		for 
+		//System.out.println(Arrays.toString(arr));
+		//if at any point in the math part it equals 0 switch the signs
+		System.out.println(Arrays.toString(newarr));
+		
+		scn.close();
+		out.close();
+	}
+	
+	public static int getPos(int value, int[] arr)
+	{
+		int pos = 0;
+		for(int i = 0; i < arr.length; i++)
+		{
+			if(arr[i]== value)
+			{
+				pos = i;
+			}
+		}
+		return pos;
+	}
+}
