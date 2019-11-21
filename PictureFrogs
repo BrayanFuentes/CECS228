@@ -10,16 +10,16 @@ public class PicFrogs {
 	
 	public static void main(String[] args) throws FileNotFoundException
 	{
-		File inputFile = new File("input.txt");
+		File inputFile = new File("input1.txt");
 		Scanner scn = new Scanner(inputFile);
 		PrintWriter out = new PrintWriter("output.txt");
 		int frogs = 0;
 		int num_of_steps = 0;
 		int counter = 0;
 		int swaps = 0;
-		int sum = 0;
 		ArrayList<Integer> nums = new ArrayList<Integer>();
 		String[] str = null;
+		//get all the data required from the data and make assign them to their respective instances
 		while(scn.hasNext())
 		{
 			if(counter == 0 && scn.hasNextInt())
@@ -30,8 +30,7 @@ public class PicFrogs {
 			{
 				num_of_steps = scn.nextInt();
 				int temp = num_of_steps;
-				str = new String[temp];
-				
+				str = new String[temp];	
 			}
 			else if(scn.hasNextInt())
 			{
@@ -44,187 +43,104 @@ public class PicFrogs {
 					str[i] = scn.next();
 				}
 			}
-			counter++;
-			
+			counter++;			
 		}
 		Collections.sort(nums);
-		System.out.println(nums);
-		System.out.println(Arrays.toString(str));
-		for(int i = 0; i < str.length;i++)
-		{
-			if(i == str.length - 1)
+		//System.out.println(nums);
+		//System.out.println(Arrays.toString(str));
+		int[][] final_array = new int[frogs][];
+		String[][] final_string = new String[frogs][];		
+		int c = 0;
+		for(int i = 0; i < frogs; i++)
+		{	
+			ArrayList<Integer> a_list = new ArrayList<Integer>();
+			ArrayList<Integer> b_list = new ArrayList<Integer>();
+			char[] temp1 = new char[num_of_steps];
+			String[] f_list = new String[num_of_steps];
+			c = i * num_of_steps;
+			for(int a = 0; a < num_of_steps ; a++)
 			{
-				continue;
+				String t = str[a];
+				temp1[a] = t.charAt(i);
+				a_list.add(nums.get(a+c));
 			}
-			else 
+			for(int z = 0; z < temp1.length;z++)
 			{
-				if(str[i].equals(str[i+1]))
+				String s = Character.toString(temp1[z]);
+				f_list[z] = s;
+			}
+			swaps = 0;
+			//goes through each string and counts the swaps there are.
+			for(int b = 0; b < f_list.length; b++)
+			{		
+				if(b == f_list.length -1)
 				{
 					continue;
 				}
 				else
 				{
-					swaps++;
+					if(f_list[b].equals(f_list[b+1]))
+					{
+						continue;	
+					}
+					else
+					{
+						swaps += 1;
+					}
 				}
 			}
-		}
-		int ascend = 1;
-		int descend = 1;
-		int[][] final_array = new int[frogs][];
-		String[][] final_string = new String[frogs][];
-		
-		if(frogs == 1)
-		{
-			/*
-			for(int a = 0; a < frogs ; a++)
+
+			int starting_index = (a_list.size()-1) - swaps;
+			int start = a_list.get(starting_index);
+			int increment = 1; 
+			int decrement = 1; 
+			int[] another  = new int[num_of_steps];
+
+			for(int b = 0; b < a_list.size(); b++)
 			{
-				
-				int starting_index = (nums.size()-1) - swaps;
-				int start = nums.get(starting_index);
-				for(int b = 0; b < nums.size(); b++)
+				if(b == 0)
 				{
-					if(b == 0)
+					b_list.add(start);
+				}
+				else
+				{
+					if(b != a_list.size()-1)
 					{
-						list.add(start);
+						if((f_list[b-1].equals(f_list[b])))
+						{
+							int temp2 = a_list.get(starting_index - decrement);
+							b_list.add(temp2);
+							decrement +=1;
+						}
+						else
+						{	
+							int temp2 = a_list.get(starting_index + increment);;
+							b_list.add(temp2); 
+							increment += 1;
+						}
 					}
 					else
 					{
-						if(b != nums.size()-1)
+						for(int items: a_list )
 						{
-							if((str[b-1].equals(str[b])))
+							boolean in = b_list.contains(items);
+							if(in == false)
 							{
-								int temp = nums.get(starting_index - descend);
-								//System.out.println(temp  + " " + b );
-								list.add(temp);
-								descend +=1;
-							}
-							else
-							{	
-								int temp = nums.get(starting_index + ascend);
-								//System.out.println(temp + " " + b);
-								list.add(temp);
-								ascend += 1;
-							}
+								b_list.add(items);
+							}			
 						}
-						else
-						{
-							for(int items: nums )
-							{
-								boolean in = list.contains(items);
-								if(in == false)
-								{
-									list.add(items);
-								}			
-							}
-						}
-			  		}
-				}				
-			
+					}
+				}
 			}
-			sum = getSum(list,str);
-			assignSigns(list,str);
-			*/
-		}
-		else
-		{
-			int c = 0;
-			for(int i = 0; i < frogs; i++)
-			{	
-				int[] temp = new int [num_of_steps];
-				ArrayList<Integer> a_list = new ArrayList<Integer>();
-				ArrayList<Integer> b_list = new ArrayList<Integer>();
-				char[] temp1 = new char[num_of_steps];
-				String[] f_list = new String[num_of_steps];
-				c = i * num_of_steps;
-				for(int a = 0; a < num_of_steps ; a++)
-				{
-					String t = str[a];
-					temp1[a] = t.charAt(i);
-					a_list.add(nums.get(a+c));
-				}
-				for(int z = 0; z < temp1.length;z++)
-				{
-					String s = Character.toString(temp1[z]);
-					f_list[z] = s;
-				}
-				swaps = 0;
-				System.out.println();
-				for(int b = 0; b < f_list.length; b++)
-				{
-					
-					if(b == f_list.length -1)
-					{
-						continue;
-					}
-					else
-					{
-						if(f_list[b].equals(f_list[b+1]))
-						{
-							continue;	
-						}
-						else
-						{
-							swaps += 1;
-						}
-					}
-				}
-				
-				int starting_index = (a_list.size()-1) - swaps;
-				int start = a_list.get(starting_index);
-				int increment = 1; 
-				int decrement = 1; 
-				int[] another  = new int[num_of_steps];
-				
-				for(int b = 0; b < a_list.size(); b++)
-				{
-					if(b == 0)
-					{
-						b_list.add(start);
-					}
-					else
-					{
-						if(b != a_list.size()-1)
-						{
-							if((f_list[b-1].equals(f_list[b])))
-							{
-								int temp2 = a_list.get(starting_index - decrement);
-								//System.out.println(temp  + " " + b );
-								b_list.add(temp2);
-								decrement +=1;
-							}
-							else
-							{	
-								int temp2 = a_list.get(starting_index + increment);;
-								//System.out.println(temp + " " + b);
-								b_list.add(temp2); 
-								increment += 1;
-							}
-						}
-						else
-						{
-							for(int items: a_list )
-							{
-								boolean in = b_list.contains(items);
-								if(in == false)
-								{
-									b_list.add(items);
-								}			
-							}
-						}
-			  		}
-				}
-				for(int w= 0; w < b_list.size(); w++)
-				{
-					another[w] = b_list.get(w);
-				}
-				getSum(another,f_list);
-				final_array[i] = another;
-				final_string[i] = f_list;
+			for(int w= 0; w < b_list.size(); w++)
+			{
+				another[w] = b_list.get(w);
 			}
-			
-			
-			
-			
+			assignSigns(another,f_list);
+			checkSum(another,f_list);
+			sumChecker(another, f_list);
+			final_array[i] = another;
+			final_string[i] = f_list;
 		}
 		for(int[] items : final_array)
 		{
@@ -236,105 +152,111 @@ public class PicFrogs {
 		}
 		
 		
+		for(int w = 0; w < num_of_steps; w++)
+		{
+			out.print(final_array[0][w]);
+			for(int f =1; f < frogs; f++ )
+			{
+				out.print(","+ final_array[f][w]);
+			}
+			out.println();
+		}
 		scn.close();
 		out.close();
 	}
-	public static void getSum(int[] arr , String[] signs)
+	
+	public static void assignSigns(int[] arr, String[] signs)
 	{
-		int sum = 0;
-		for(int i = 0; i < arr.length; i++)
+		for(int i = 0; i < arr.length;i++)
 		{
-			
-			if(i == arr.length-1)
+			if(i ==0 )
 			{
-				if(signs[i].equals("+"))
+				if(signs[i].equals("-"))
 				{
-					sum += arr[i];
-				}
-				else
-				{
-					sum -= arr[i];
-					arr[i] *= -1;
-				}
-			}
-			else if(i == 0)
-			{
-				if(signs[i].equals("+"))
-				{
-					sum += arr[i];
-				}
-				else
-				{
-					sum -= arr[i];
 					arr[i] *= -1;
 				}
 			}
 			else
 			{
-				int temp_sum = sum;
-				if(signs[i].equals("+"))
+				if(signs[i-1].equals(signs[i]))
 				{
-					temp_sum += arr[i];
-					if(signs[i+1].equals("+"))
+					
+					if(arr[i-1] > 0)
 					{
-						temp_sum += arr[i+1];
-						if(temp_sum > 0)
-						{
-							sum += arr[i];
-						}
-						else
-						{
-							sum-= arr[i];
-							arr[i] *= -1;
-						}
-					}
-					//if its - 
-					else
-					{
-						temp_sum -= arr[i+1];
-						if(temp_sum < 0)
-						{
-							sum += arr[i];
-						}
-						else
-						{
-							sum -= arr[i];
-							arr[i] *= -1;
-						}
+						arr[i] *= -1;
 					}
 				}
 				else
 				{
-					temp_sum -= arr[i];
-					if(signs[i+1].equals("+"))
+					if(signs[i].equals("-"))
 					{
-						temp_sum += arr[i+1];
-						if(temp_sum > 0)
-						{
-							sum -= arr[i];
-							arr[i] *= -1;
-						}
-						else
-						{
-							sum += arr[i];
-						}
+						arr[i] *= -1;
+						
 					}
-					else
-					{
-						temp_sum -= arr[i+1];
-						if(temp_sum < 0)
-						{
-							sum -= arr[i];
-							arr[i] *= -1;
-						}
-						else
-						{
-							sum += arr[i];
-						}
-					}				
 				}
 			}
 		}
 		
 	}
+	
+	public static void checkSum(int[] arr , String[] signs)
+	{
+		int sum = 0;
+		for(int i = 0; i < arr.length; i++)
+		{
+
+			if(i == arr.length-1 || i ==0)
+			{
+				sum += arr[i];
+			}
+			else
+			{
+				int temp_sum = sum;
+				temp_sum += arr[i];
+				if(signs[i+1].equals("+"))
+				{
+					temp_sum += arr[i+1];
+					if(temp_sum <= 0)
+					{
+						arr[i] *= -1;
+						sum += arr[i] ;		
+					}
+					else
+					{
+						sum += arr[i];
+					}
+						
+				}
+				else if(signs[i+1].equals("-"))
+				{
+					
+					temp_sum += arr[i+1];
+					if(temp_sum >= 0)
+					{
+						arr[i] *= -1;
+						sum += arr[i];
+					}
+					else
+					{
+						sum += arr[i];
+					}					
+				}
+			}
+		}
+	}
+	
+	public static void sumChecker(int [] arr,String[] signs)
+	{
+		int sum = 0;
+		for(int i = 0; i < arr.length; i++)
+		{
+			sum+=arr[i];
+			if((signs[i].equals("+") && sum < 0) || (signs[i].equals("-") && sum > 0))
+			{
+				System.out.println("Sum is not correct");
+			}
+		}
+	}
 }
+
+
