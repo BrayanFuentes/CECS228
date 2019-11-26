@@ -137,8 +137,11 @@ public class PicFrogs {
 				another[w] = b_list.get(w);
 			}
 			assignSigns(another,f_list);
-			checkSum(another,f_list);
-			//sumChecker(another, f_list);
+			signAdjuster(another, f_list);
+			System.out.println(Arrays.toString(another));
+			System.out.println(Arrays.toString(f_list));
+			errorChecker(another, f_list);
+			finalChecker(another, f_list);
 			final_array[i] = another;
 			final_string[i] = f_list;
 		}
@@ -167,13 +170,15 @@ public class PicFrogs {
 	
 	public static void assignSigns(int[] arr, String[] signs)
 	{
+		
 		for(int i = 0; i < arr.length;i++)
 		{
-			if(i ==0 )
+			if(i == 0 )
 			{
 				if(signs[i].equals("-"))
 				{
 					arr[i] *= -1;
+					
 				}
 			}
 			else
@@ -191,53 +196,93 @@ public class PicFrogs {
 					if(signs[i].equals("-"))
 					{
 						arr[i] *= -1;
-						
 					}
 				}
 			}
+		
 		}
 		
 	}
 	
-	public static void checkSum(int[] arr , String[] signs)
+	public static void errorChecker(int[] arr , String[] signs)
 	{
 		int sum = 0;
-		for(int i = 0; i < arr.length; i++)
+		for(int i = 0; i < arr.length; i ++)
 		{
-			sum = sum+arr[i];
-	    	if(sum<0 && signs[i].equals("+"))
+			sum += arr[i];
+			if((signs[i].equals("-") && sum>0)||(sum<0 && signs[i].equals("+")))
+			{
+				boolean wrong = true;
+				if(wrong==true)
+				{
+					signAdjuster(arr,signs);
+				}
+			}
+		}
+		
+		
+	}
+	public static void signAdjuster(int [] arr,String[] signs)
+	{
+		int sum = 0;
+		for(int i = 0; i < arr.length;i++)
+		{
+			sum += arr[i];
+			//System.out.println("i: " + i );
+			if((signs[i].equals("-") && sum>0)||(sum<0 && signs[i].equals("+")))
 	    	{
-	    		sum = sum-arr[i];
-	    		arr[i]=0-arr[i];
-	    		sum = sum + arr[i];
+				sum -= arr[i];
+				arr[i] *= -1;
+				sum += arr[i];
+				for(int j = i+1; j < arr.length;j++)
+				{
+					if(j != arr.length-1)
+					{
+						if(signs[j-1].equals(signs[j]))
+						{
+							
+							arr[j] *= -1;
+						}
+					}
+					else 
+					{
+						continue;
+					}
+				}
 	    	}
-	    	else if(sum>0 && signs[i].equals("-"))
-	    	{
-	    		sum = sum-arr[i];
-	    		arr[i]=0-arr[i];
-	    		sum = sum + arr[i];
-	    	}
+		}
+		
+	}
 
+	public static void finalChecker(int[]arr, String[] signs)
+	{
+		int sum = 0;
+		for(int i = 0; i < arr.length; i ++)
+		{
+			sum += arr[i];
+			if((signs[i].equals("-") && sum>0)||(sum<0 && signs[i].equals("+")))
+			{
+				System.out.println("error at i: " + i);
+				System.exit(0);
+			}
+		}
+	}
+		//System.out.println(sum); 
+		/*
+			
+			
+			
+			
+			
+			//System.out.println(sum);
+			
     		/*if((signs[i].equals("-") && sum>0)||(sum<0 && signs[i].equals("+")))
 	    	{
     			System.exit(0);
 	    	}
 			*/
-		}
-	}
+		
+		
+		//System.out.println(sum);
 	
-	public static void sumChecker(int [] arr,String[] signs)
-	{
-		int sum = 0;
-		for(int i = 0; i < arr.length; i++)
-		{
-			sum+=arr[i];
-			if((signs[i].equals("+") && sum < 0) || (signs[i].equals("-") && sum > 0))
-			{
-				System.out.println("Sum is not correct : i: " + i);
-				System.exit(0);
-			}
-		}
-	}
-}
-
+}	
